@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV Data</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>CSV File Data</h1>
+    <table id="csv-table"></table>
+
+    <script>
+        // 使用PapaParse库读取CSV文件
+        Papa.parse('https://raw.githubusercontent.com/yourusername/csv-to-webpage/main/yourfile.csv', {
+            download: true,
+            header: true,
+            complete: function(results) {
+                console.log(results);
+                var table = document.getElementById("csv-table");
+
+                // 创建表头
+                var headerRow = table.insertRow();
+                Object.keys(results.data[0]).forEach(function(key) {
+                    var cell = headerRow.insertCell();
+                    cell.textContent = key;
+                });
+
+                // 创建表格数据行
+                results.data.forEach(function(row) {
+                    var tableRow = table.insertRow();
+                    Object.values(row).forEach(function(cellData) {
+                        var cell = tableRow.insertCell();
+                        cell.textContent = cellData;
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
